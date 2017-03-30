@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <div class="starter-template">
+        <h1>Final Year Project Home</h1>
+        <p class="lead">This is a data visualisation and analysis project</p>
+    </div>
+
+
+    <form action="{{ url_for('summarize') }}" method="GET">
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Input Ticker Name" name="ticker">
+            <span class="input-group-btn">
+            <button class="btn btn-default" type="submit">Go!</button>
+        </span>
+        </div>
+    </form>
+
+{% endblock %}

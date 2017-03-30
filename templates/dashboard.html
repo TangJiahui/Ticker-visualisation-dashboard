@@ -1,0 +1,295 @@
+{% extends "base.html" %}
+
+{% block additional_head %}
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="/static/d3.layout.cloud.js"></script>
+{% endblock %}
+
+{% block content %}
+    <style>
+        body {
+            padding-top: 80px;
+        }
+
+        .starter-template {
+            padding: 40px 15px;
+            text-align: center;
+        }
+
+        .row {
+            margin: 20px 0;
+        }
+
+        ul {
+            text-align: left;
+        }
+
+        .company-logo {
+            display: block;
+            margin: auto;
+            max-width: 130px;
+            max-height: 130px;
+        }
+    </style>
+
+    <div id="fb-root"></div>
+    <script>(function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.8";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
+
+    <div class="row">
+        <div class="col-md-4">
+            <img class="company-logo" src="{{ wiki.image }}">
+        </div>
+
+        <div class="col-md-8">
+            <h4>{{ wiki.name }}</h4>
+            <p>{{ wiki.article }}</p>
+            Link to Wikipedia:
+            <a href="{{ wiki.url }}">{{ wiki.url }}</a>
+        </div>
+    </div>
+
+
+    <!-- TradingView Widget -->
+    <div class="row" style="height: 500px">
+        <div class="col-xs-12" style="height: 100%">
+            <script type="text/javascript" src="https://d33t3vvu2t2yu5.cloudfront.net/tv.js"></script>
+            <script type="text/javascript">
+                new TradingView.widget({
+                    "autosize": true,
+                    "symbol": "NASDAQ:{{ ticker }}",
+                    "interval": "D",
+                    "timezone": "Etc/UTC",
+                    "theme": "White",
+                    "style": "1",
+                    "locale": "en",
+                    "toolbar_bg": "#f1f3f6",
+                    "enable_publishing": false,
+                    "withdateranges": true,
+                    "allow_symbol_change": true,
+                    "details": true,
+                    "hotlist": true,
+                    "calendar": true
+                });
+            </script>
+        </div>
+    </div>
+
+
+    <!-- News & Summarization Widget -->
+    <div class="row">
+        <div class="col-md-8">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Relevant News Media</h3>
+                </div>
+                <div class="panel-body">
+                    {% for article in result %}
+                        <div class="media">
+                            <div class="media-left">
+                                <a href="{{ article.url }}">
+                                    <img style="max-width: 96px; max-height: 96px" class="media-object"
+                                         src="{{ article.image or "http://www.oneilllogistics.com/content/images/news.png" }}"
+                                    >
+                                </a>
+                            </div>
+                            <div class="media-body">
+                                <a href="{{ article.url }}">
+                                    <h4 class="media-heading">{{ article.title }}</h4>
+                                </a>
+                                <p style="color: darkgrey;"> Sources: {{ article.domain }} </p>
+                                <ul>
+                                    {% for point in article.points %}
+                                        <li>{{ point }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+
+        {#  left column #}
+
+        <!-- Social Mention Widget -->
+        <div class="col-md-4">
+            {#            <div class="panel panel-default">#}
+            {#                <div class="panel-heading">#}
+            {#                    <h3 class="panel-title"> Social Mention </h3>#}
+            {#                </div>#}
+            {#                <div class="panel-body">#}
+            {#                    {% for article in social %}#}
+            {#                        <div class="media">#}
+            {#                            <div class="media-left">#}
+            {#                                <a href="{{ article.link }}">#}
+            {#                                    <img style="max-width: 96px; max-height: 96px" class="media-object"#}
+            {#                                         src="{{ article.image or "http://www.oneilllogistics.com/content/images/news.png" }}"#}
+            {#                                    >#}
+            {#                                </a>#}
+            {#                            </div>#}
+            {#                            <div class="media-body">#}
+            {#                                <a href="{{ article.link }}">#}
+            {#                                    <h4 class="media-heading">{{ article.title }}</h4>#}
+            {#                                </a>#}
+            {#                                <p style="color: darkgrey;"> Sources: {{ article.source }} </p>#}
+            {#                                <p>#}
+            {#                                    {{ article.description }}#}
+            {#                                </p>#}
+            {#                            </div>#}
+            {#                        </div>#}
+            {#                    {% endfor %}#}
+            {#                </div>#}
+            {#            </div>#}
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"> Relevant Stock Tickers</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="list-group">
+                        {% for i, j in relevant_t_c %}
+                            <a href="{{ url_for('summarize', ticker = i) }}" class="list-group-item ">
+                                {{ i + ": " +j }}
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+
+            {% if ticker=="AAPL" or ticker=="aapl" %}
+                <a class="twitter-timeline" href="https://twitter.com/search?q=aapl"
+                   data-widget-id="842403585434431488">Tweets about aapl</a>
+                <script>!function (d, s, id) {
+                    var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https';
+                    if (!d.getElementById(id)) {
+                        js = d.createElement(s);
+                        js.id = id;
+                        js.src = p + "://platform.twitter.com/widgets.js";
+                        fjs.parentNode.insertBefore(js, fjs);
+                    }
+                }(document, "script", "twitter-wjs");</script>
+
+                <div class="fb-page" data-href="https://www.facebook.com/Apple/" data-tabs="timeline"
+                     data-small-header="false" data-adapt-container-width="true" data-hide-cover="false"
+                     data-show-facepile="true">
+                    <blockquote cite="https://www.facebook.com/Apple/" class="fb-xfbml-parse-ignore"><a
+                            href="https://www.facebook.com/Apple/">Apple</a></blockquote>
+                </div>
+
+            {% endif %}
+
+
+            {% if ticker=="YHOO" or ticker=="yhoo" %}
+                <a class="twitter-timeline" href="https://twitter.com/search?q=yhoo"
+                   data-widget-id="842402672401559553">Tweets about yhoo</a>
+                <script>!function (d, s, id) {
+                    var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https';
+                    if (!d.getElementById(id)) {
+                        js = d.createElement(s);
+                        js.id = id;
+                        js.src = p + "://platform.twitter.com/widgets.js";
+                        fjs.parentNode.insertBefore(js, fjs);
+                    }
+                }(document, "script", "twitter-wjs");</script>
+
+                <div class="fb-page" data-href="https://www.facebook.com/Yahoo/" data-tabs="timeline"
+                     data-small-header="false" data-adapt-container-width="true" data-hide-cover="false"
+                     data-show-facepile="true">
+                    <blockquote cite="https://www.facebook.com/Yahoo/" class="fb-xfbml-parse-ignore"><a
+                            href="https://www.facebook.com/Yahoo/">Yahoo</a></blockquote>
+                </div>
+            {% endif %}
+
+        </div>
+
+        <div class="col-md-8">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"> Word Cloud</h3>
+                </div>
+                <div id="wordcloud"></div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"> Twitters</h3>
+                </div>
+                <div class="panel-body" style="overflow-y: scroll; height:400px;">
+                    {% for t in social_tweets %}
+                        <blockquote class="twitter-tweet">
+                            <a href="https://twitter.com/{{ t.screen_name }}/status/{{ t.id }}">...</a>
+                        </blockquote>
+{#                        <div class="media">#}
+{#                            <div class="media-left">#}
+{#                                <img style="max-width: 96px; max-height: 96px" class="media-object"#}
+{#                                     src="{{ t.image }}">#}
+{#                            </div>#}
+{#                            <div class=" media-body">#}
+{#                                <h4 class="media-heading">{{ t.name }}</h4>#}
+{#                                {{ t.text }}#}
+{#                            </div>#}
+{#                        </div>#}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+    <script async src="https://platform.twitter.com/widgets.js"></script>
+
+        <script>
+            var enclosing_div = document.getElementById('wordcloud');
+            var container_width = enclosing_div.clientWidth;
+
+            var frequency_list = {{ wordcloud|tojson }};
+
+            var color = d3.scale.linear()
+                .domain([0, 1, 2, 3, 4, 5, 6, 10, 15, 20, 100])
+                .range(["#ddd", "#ccc", "#bbb", "#aaa", "#999", "#888", "#777", "#666", "#555", "#444", "#333", "#222"]);
+
+            d3.layout.cloud().size([container_width - 50, 400 - 50])
+                .words(frequency_list)
+                .rotate(0)
+                .fontSize(function (d) {
+                    return d.size;
+                })
+                .on("end", draw)
+                .start();
+
+            function draw(words) {
+                d3.select("#wordcloud").append("svg")
+                    .attr("width", container_width)
+                    .attr("height", 400)
+                    .attr("class", "wordcloud")
+                    .append("g")
+                    // without the transform, words words would get cutoff to the left and top, they would
+                    // appear outside of the SVG area
+                    .attr("transform", "translate(" + (container_width / 2 - 80) + ", 200)")
+                    .selectAll("text")
+                    .data(words)
+                    .enter().append("text")
+                    .style("font-size", function (d) {
+                        return d.size + "px";
+                    })
+                    .style("fill", function (d, i) {
+                        return color(i);
+                    })
+                    .attr("transform", function (d) {
+                        return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+                    })
+                    .text(function (d) {
+                        return d.text;
+                    });
+            }
+        </script>
+{% endblock %}
