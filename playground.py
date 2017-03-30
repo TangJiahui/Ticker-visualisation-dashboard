@@ -77,6 +77,7 @@ def parse_bbc():
 @app.route('/summarize/')
 def summarize():
     ticker = request.args['ticker']
+    company_name = convert_ticker_to_company(ticker)[0]
     social_tweets = tweets(ticker)
     result = get_history_summary(ticker)
     wiki = wiki_page(ticker)
@@ -84,7 +85,7 @@ def summarize():
     relevant_comp = convert_ticker_to_company(relevant_ticker)
     relevant_t_c = zip(relevant_ticker, relevant_comp)
     wordcloud = generate_wordcloud(result)
-    return render_template('dashboard.html', ticker=ticker, result=result,
+    return render_template('dashboard.html', ticker=ticker, company_name=company_name, result=result,
                            wiki=wiki, relevant_t_c=relevant_t_c, wordcloud=wordcloud, social_tweets=social_tweets)
 
 

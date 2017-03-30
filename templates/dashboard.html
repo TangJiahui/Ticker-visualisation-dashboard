@@ -164,52 +164,29 @@
                 </div>
             </div>
 
-
-            {% if ticker=="AAPL" or ticker=="aapl" %}
-                <a class="twitter-timeline" href="https://twitter.com/search?q=aapl"
-                   data-widget-id="842403585434431488">Tweets about aapl</a>
-                <script>!function (d, s, id) {
-                    var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https';
-                    if (!d.getElementById(id)) {
-                        js = d.createElement(s);
-                        js.id = id;
-                        js.src = p + "://platform.twitter.com/widgets.js";
-                        fjs.parentNode.insertBefore(js, fjs);
-                    }
-                }(document, "script", "twitter-wjs");</script>
-
-                <div class="fb-page" data-href="https://www.facebook.com/Apple/" data-tabs="timeline"
-                     data-small-header="false" data-adapt-container-width="true" data-hide-cover="false"
-                     data-show-facepile="true">
-                    <blockquote cite="https://www.facebook.com/Apple/" class="fb-xfbml-parse-ignore"><a
-                            href="https://www.facebook.com/Apple/">Apple</a></blockquote>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"> Social Mentions in Twitter</h3>
                 </div>
-
-            {% endif %}
-
-
-            {% if ticker=="YHOO" or ticker=="yhoo" %}
-                <a class="twitter-timeline" href="https://twitter.com/search?q=yhoo"
-                   data-widget-id="842402672401559553">Tweets about yhoo</a>
-                <script>!function (d, s, id) {
-                    var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https';
-                    if (!d.getElementById(id)) {
-                        js = d.createElement(s);
-                        js.id = id;
-                        js.src = p + "://platform.twitter.com/widgets.js";
-                        fjs.parentNode.insertBefore(js, fjs);
-                    }
-                }(document, "script", "twitter-wjs");</script>
-
-                <div class="fb-page" data-href="https://www.facebook.com/Yahoo/" data-tabs="timeline"
-                     data-small-header="false" data-adapt-container-width="true" data-hide-cover="false"
-                     data-show-facepile="true">
-                    <blockquote cite="https://www.facebook.com/Yahoo/" class="fb-xfbml-parse-ignore"><a
-                            href="https://www.facebook.com/Yahoo/">Yahoo</a></blockquote>
+                <div class="panel-body" style="overflow-y: scroll; height:400px;">
+                    {% for t in social_tweets %}
+                        <blockquote class="twitter-tweet">
+                            <a href="https://twitter.com/{{ t.screen_name }}/status/{{ t.id }}">...</a>
+                        </blockquote>
+                    {% endfor %}
                 </div>
-            {% endif %}
+            </div>
 
+            <div class="fb-page" data-href="https://www.facebook.com/apple/" data-tabs="timeline"
+                 data-small-header="false" data-adapt-container-width="true" data-hide-cover="false"
+                 data-show-facepile="true">
+                <blockquote cite="https://www.facebook.com/apple/" class="fb-xfbml-parse-ignore"><a
+                        href="https://www.facebook.com/apple/">APPLE</a></blockquote>
+            </div>
         </div>
+
+        <script async src="https://platform.twitter.com/widgets.js"></script>
+
 
         <div class="col-md-8">
             <div class="panel panel-default">
@@ -220,32 +197,6 @@
             </div>
         </div>
 
-        <div class="col-md-4">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title"> Twitters</h3>
-                </div>
-                <div class="panel-body" style="overflow-y: scroll; height:400px;">
-                    {% for t in social_tweets %}
-                        <blockquote class="twitter-tweet">
-                            <a href="https://twitter.com/{{ t.screen_name }}/status/{{ t.id }}">...</a>
-                        </blockquote>
-{#                        <div class="media">#}
-{#                            <div class="media-left">#}
-{#                                <img style="max-width: 96px; max-height: 96px" class="media-object"#}
-{#                                     src="{{ t.image }}">#}
-{#                            </div>#}
-{#                            <div class=" media-body">#}
-{#                                <h4 class="media-heading">{{ t.name }}</h4>#}
-{#                                {{ t.text }}#}
-{#                            </div>#}
-{#                        </div>#}
-                    {% endfor %}
-                </div>
-            </div>
-        </div>
-
-    <script async src="https://platform.twitter.com/widgets.js"></script>
 
         <script>
             var enclosing_div = document.getElementById('wordcloud');
