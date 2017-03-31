@@ -3,18 +3,20 @@
 {% block content %}
 
     <div class="starter-template">
-        <h1>Final Year Project Home</h1>
-        <p class="lead">This is a data visualisation and analysis project</p>
+        <h1>Ticker Watcher</h1>
+        <p class="lead">A Dashboard Demonstration for Efficient Market Research</p>
     </div>
 
-
+    <div class="col-md-8 col-md-offset-2">
     <form action="{{ url_for('summarize') }}" method="GET">
         <div class="input-group">
-            <input type="text" class="form-control" placeholder="Input Ticker Name" name="ticker">
+            <input type="text" class="form-control" placeholder="Get Started by Inputting a Ticker Name" name="ticker">
             <span class="input-group-btn">
-            <button class="btn btn-default" type="submit">Go!</button>
+            <button class="btn btn-default" type="submit"> Search </button>
         </span>
         </div>
     </form>
+    </div>
+
 
 {% endblock %}

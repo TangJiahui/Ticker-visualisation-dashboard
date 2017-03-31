@@ -2,7 +2,9 @@
 
 {% block additional_head %}
     <script src="http://d3js.org/d3.v3.min.js"></script>
-    <script src="/static/d3.layout.cloud.js"></script>
+    <script src="/static/js/d3.layout.cloud.js"></script>
+
+    <script async src="https://platform.twitter.com/widgets.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -55,39 +57,44 @@
         </div>
     </div>
 
-
-    <!-- TradingView Widget -->
-    <div class="row" style="height: 500px">
-        <div class="col-xs-12" style="height: 100%">
-            <script type="text/javascript" src="https://d33t3vvu2t2yu5.cloudfront.net/tv.js"></script>
-            <script type="text/javascript">
-                new TradingView.widget({
-                    "autosize": true,
-                    "symbol": "NASDAQ:{{ ticker }}",
-                    "interval": "D",
-                    "timezone": "Etc/UTC",
-                    "theme": "White",
-                    "style": "1",
-                    "locale": "en",
-                    "toolbar_bg": "#f1f3f6",
-                    "enable_publishing": false,
-                    "withdateranges": true,
-                    "allow_symbol_change": true,
-                    "details": true,
-                    "hotlist": true,
-                    "calendar": true
-                });
-            </script>
+    <!-- TradingView Widget BEGIN -->
+    <div class="row">
+        <div class="col-xs-12">
+            <div id="hi-man"></div>
         </div>
     </div>
 
+    <script type="text/javascript" src="https://d33t3vvu2t2yu5.cloudfront.net/tv.js"></script>
+    <script type="text/javascript">
+        new TradingView.MediumWidget({
+            "container_id": "hi-man",
+            "symbols": [
+                [
+                    "{{ company_name }}",
+                    "{{ ticker }}"
+                ]
+            ],
+            "gridLineColor": "#e9e9ea",
+            "fontColor": "#83888D",
+            "underLineColor": "#dbeffb",
+            "trendLineColor": "#4bafe9",
+            "width": "100%",
+            "height": "350px",
+            "locale": "en"
+        });
+    </script>
+    <!-- TradingView Widget END -->
 
     <!-- News & Summarization Widget -->
     <div class="row">
         <div class="col-md-8">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Relevant News Media</h3>
+                    <div class="panel-title">
+                        <span class="glyphicon glyphicon-menu-up"></span>
+                        Relevant News Media
+                        <span class="glyphicon glyphicon-remove pull-right"></span>
+                    </div>
                 </div>
                 <div class="panel-body">
                     {% for article in result %}
@@ -114,6 +121,19 @@
                     {% endfor %}
                 </div>
             </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        <span class="glyphicon glyphicon-menu-up"></span>
+                        Word Cloud
+                        <span class="glyphicon glyphicon-remove pull-right"></span>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div id="wordcloud"></div>
+                </div>
+            </div>
         </div>
 
 
@@ -121,37 +141,13 @@
 
         <!-- Social Mention Widget -->
         <div class="col-md-4">
-            {#            <div class="panel panel-default">#}
-            {#                <div class="panel-heading">#}
-            {#                    <h3 class="panel-title"> Social Mention </h3>#}
-            {#                </div>#}
-            {#                <div class="panel-body">#}
-            {#                    {% for article in social %}#}
-            {#                        <div class="media">#}
-            {#                            <div class="media-left">#}
-            {#                                <a href="{{ article.link }}">#}
-            {#                                    <img style="max-width: 96px; max-height: 96px" class="media-object"#}
-            {#                                         src="{{ article.image or "http://www.oneilllogistics.com/content/images/news.png" }}"#}
-            {#                                    >#}
-            {#                                </a>#}
-            {#                            </div>#}
-            {#                            <div class="media-body">#}
-            {#                                <a href="{{ article.link }}">#}
-            {#                                    <h4 class="media-heading">{{ article.title }}</h4>#}
-            {#                                </a>#}
-            {#                                <p style="color: darkgrey;"> Sources: {{ article.source }} </p>#}
-            {#                                <p>#}
-            {#                                    {{ article.description }}#}
-            {#                                </p>#}
-            {#                            </div>#}
-            {#                        </div>#}
-            {#                    {% endfor %}#}
-            {#                </div>#}
-            {#            </div>#}
-
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title"> Relevant Stock Tickers</h3>
+                    <div class="panel-title">
+                        <span class="glyphicon glyphicon-menu-up"></span>
+                        Relevant Stock Tickers
+                        <span class="glyphicon glyphicon-remove pull-right"></span>
+                    </div>
                 </div>
                 <div class="panel-body">
                     <div class="list-group">
@@ -164,9 +160,14 @@
                 </div>
             </div>
 
+
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title"> Social Mentions in Twitter</h3>
+                    <div class="panel-title">
+                        <span class="glyphicon glyphicon-menu-up"></span>
+                        Social Mentions in Twitter
+                        <span class="glyphicon glyphicon-remove pull-right"></span>
+                    </div>
                 </div>
                 <div class="panel-body" style="overflow-y: scroll; height:400px;">
                     {% for t in social_tweets %}
@@ -177,70 +178,94 @@
                 </div>
             </div>
 
-            <div class="fb-page" data-href="https://www.facebook.com/apple/" data-tabs="timeline"
-                 data-small-header="false" data-adapt-container-width="true" data-hide-cover="false"
-                 data-show-facepile="true">
-                <blockquote cite="https://www.facebook.com/apple/" class="fb-xfbml-parse-ignore"><a
-                        href="https://www.facebook.com/apple/">APPLE</a></blockquote>
-            </div>
-        </div>
 
-        <script async src="https://platform.twitter.com/widgets.js"></script>
-
-
-        <div class="col-md-8">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title"> Word Cloud</h3>
+                    <div class="panel-title">
+                        <span class="glyphicon glyphicon-menu-up"></span>
+                        Facebook Page
+                        <span class="glyphicon glyphicon-remove pull-right"></span>
+                    </div>
                 </div>
-                <div id="wordcloud"></div>
+                <div class="panel-body">
+                    <div class="fb-page" data-href="https://www.facebook.com/apple/" data-tabs="timeline"
+                         data-small-header="false" data-adapt-container-width="true" data-hide-cover="false"
+                         data-show-facepile="true">
+                        <blockquote cite="https://www.facebook.com/apple/" class="fb-xfbml-parse-ignore"><a
+                                href="https://www.facebook.com/apple/">APPLE</a></blockquote>
+                    </div>
+                </div>
             </div>
+
+
         </div>
 
 
-        <script>
-            var enclosing_div = document.getElementById('wordcloud');
-            var container_width = enclosing_div.clientWidth;
+    </div>
 
-            var frequency_list = {{ wordcloud|tojson }};
+    <script>
+        $(function () {
+            $('.panel-heading').on("click", function (e) {
+                if ($(this).hasClass('panel-collapsed')) {
+                    $(this).parents('.panel').find('.panel-body').slideDown();
+                    $(this).removeClass('panel-collapsed');
+                    $(this).find('span.glyphicon-menu-down').removeClass('glyphicon-menu-down').addClass('glyphicon-menu-up');
+                } else {
+                    $(this).parents('.panel').find('.panel-body').slideUp();
+                    $(this).addClass('panel-collapsed');
+                    $(this).find('span.glyphicon-menu-up').removeClass('glyphicon-menu-up').addClass('glyphicon-menu-down');
+                }
+            });
+            $('.glyphicon-remove').on('click', function () {
+                $(this).parents('.panel').fadeOut();
+            })
+        });
+    </script>
 
-            var color = d3.scale.linear()
-                .domain([0, 1, 2, 3, 4, 5, 6, 10, 15, 20, 100])
-                .range(["#ddd", "#ccc", "#bbb", "#aaa", "#999", "#888", "#777", "#666", "#555", "#444", "#333", "#222"]);
 
-            d3.layout.cloud().size([container_width - 50, 400 - 50])
-                .words(frequency_list)
-                .rotate(0)
-                .fontSize(function (d) {
-                    return d.size;
+    <script>
+        var enclosing_div = document.getElementById('wordcloud');
+        var container_width = enclosing_div.clientWidth;
+
+        var frequency_list = {{ wordcloud|tojson }};
+
+        var color = d3.scale.linear()
+            .domain([0, 1, 2, 3, 4, 5, 6, 10, 15, 20, 100])
+            .range(["#ddd", "#ccc", "#bbb", "#aaa", "#999", "#888", "#777", "#666", "#555", "#444", "#333", "#222"]);
+
+        d3.layout.cloud().size([container_width - 50, 400 - 50])
+            .words(frequency_list)
+            .rotate(0)
+            .fontSize(function (d) {
+                return d.size;
+            })
+            .on("end", draw)
+            .start();
+
+        function draw(words) {
+            d3.select("#wordcloud").append("svg")
+                .attr("width", container_width)
+                .attr("height", 400)
+                .attr("class", "wordcloud")
+                .append("g")
+                // without the transform, words words would get cutoff to the left and top, they would
+                // appear outside of the SVG area
+                .attr("transform", "translate(" + (container_width / 2 - 80) + ", 200)")
+                .selectAll("text")
+                .data(words)
+                .enter().append("text")
+                .style("font-size", function (d) {
+                    return d.size + "px";
                 })
-                .on("end", draw)
-                .start();
-
-            function draw(words) {
-                d3.select("#wordcloud").append("svg")
-                    .attr("width", container_width)
-                    .attr("height", 400)
-                    .attr("class", "wordcloud")
-                    .append("g")
-                    // without the transform, words words would get cutoff to the left and top, they would
-                    // appear outside of the SVG area
-                    .attr("transform", "translate(" + (container_width / 2 - 80) + ", 200)")
-                    .selectAll("text")
-                    .data(words)
-                    .enter().append("text")
-                    .style("font-size", function (d) {
-                        return d.size + "px";
-                    })
-                    .style("fill", function (d, i) {
-                        return color(i);
-                    })
-                    .attr("transform", function (d) {
-                        return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
-                    })
-                    .text(function (d) {
-                        return d.text;
-                    });
-            }
-        </script>
+                .style("fill", function (d, i) {
+                    return color(i);
+                })
+                .attr("transform", function (d) {
+                    return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+                })
+                .text(function (d) {
+                    return d.text;
+                });
+        }
+    </script>
 {% endblock %}

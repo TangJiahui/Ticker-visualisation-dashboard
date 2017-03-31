@@ -77,7 +77,7 @@ def parse_bbc():
 @app.route('/summarize/')
 def summarize():
     ticker = request.args['ticker']
-    company_name = convert_ticker_to_company(ticker)[0]
+    company_name = convert_ticker_to_company([ticker])[0]
     social_tweets = tweets(ticker)
     result = get_history_summary(ticker)
     wiki = wiki_page(ticker)
