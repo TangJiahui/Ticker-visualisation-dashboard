@@ -1,5 +1,14 @@
 {% extends "base.html" %}
 
+{% block additional_head %}
+    <style>
+        .starter-template {
+            padding: 40px 15px;
+            text-align: center;
+        }
+    </style>
+{% endblock %}
+
 {% block content %}
 
     <div class="starter-template">
@@ -7,16 +16,89 @@
         <p class="lead">A Dashboard Demonstration for Efficient Market Research</p>
     </div>
 
-    <div class="col-md-8 col-md-offset-2">
-    <form action="{{ url_for('summarize') }}" method="GET">
-        <div class="input-group">
-            <input type="text" class="form-control" placeholder="Get Started by Inputting a Ticker Name" name="ticker">
-            <span class="input-group-btn">
-            <button class="btn btn-default" type="submit"> Search </button>
-        </span>
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <form action="{{ url_for('summarize') }}" method="GET">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Get Started by Inputting a Ticker Name"
+                           name="ticker">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="submit"> Search </button>
+                    </span>
+                </div>
+            </form>
         </div>
-    </form>
     </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Ticker Watchlist</h3>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-hover">
+                        <tbody id="watchlist"></tbody>
+                    </table>
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Add a Ticker to Watchlist"
+                               id="myInput">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button" id="add_ticker">Add</button>
+                            </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <!-- TradingView Widget BEGIN -->
+            <div id="tv-medium-widget-a9de6"></div>
+            <script type="text/javascript" src="https://d33t3vvu2t2yu5.cloudfront.net/tv.js"></script>
+            <script type="text/javascript">
+                new TradingView.MediumWidget({
+                    "container_id": "tv-medium-widget-a9de6",
+                    "symbols": [
+                        [
+                            "Apple",
+                            "AAPL "
+                        ],
+                        [
+                            "Google",
+                            "NASDAQ:GOOG|1y"
+                        ]
+                    ],
+                    "gridLineColor": "#e9e9ea",
+                    "fontColor": "#83888D",
+                    "underLineColor": "#dbeffb",
+                    "trendLineColor": "#4bafe9",
+                    "width": "100%",
+                    "height": "350px",
+                    "locale": "en"
+                });
+            </script>
+        </div>
+    </div>
+
+
+    <script>
+        $(function () {
+            $('#add_ticker').on("click", function (e) {
+                var inputValue = $('#myInput').val();
+                var tr = document.createElement("tr");
+                var td = document.createElement("td")
+                var t = document.createTextNode(inputValue);
+                td.appendChild(t);
+                tr.appendChild(td)
+                if (inputValue === '') {
+                    alert("You must write something!");
+                } else {
+                    document.getElementById("watchlist").appendChild(tr);
+                }
+                document.getElementById("myInput").value = "";
+            });
+        });
+    </script>
 
 
 {% endblock %}

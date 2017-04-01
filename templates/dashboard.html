@@ -9,19 +9,6 @@
 
 {% block content %}
     <style>
-        body {
-            padding-top: 80px;
-        }
-
-        .starter-template {
-            padding: 40px 15px;
-            text-align: center;
-        }
-
-        .row {
-            margin: 20px 0;
-        }
-
         ul {
             text-align: left;
         }
@@ -149,14 +136,12 @@
                         <span class="glyphicon glyphicon-remove pull-right"></span>
                     </div>
                 </div>
-                <div class="panel-body">
-                    <div class="list-group">
-                        {% for i, j in relevant_t_c %}
-                            <a href="{{ url_for('summarize', ticker = i) }}" class="list-group-item ">
-                                {{ i + ": " +j }}
-                            </a>
-                        {% endfor %}
-                    </div>
+                <div class="panel-body list-group" style="padding: 0">
+                    {% for i, j in relevant_t_c %}
+                        <a href="{{ url_for('summarize', ticker = i) }}" class="list-group-item ">
+                            {{ i + ": " +j }}
+                        </a>
+                    {% endfor %}
                 </div>
             </div>
 
