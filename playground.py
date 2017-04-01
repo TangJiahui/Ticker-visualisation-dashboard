@@ -122,15 +122,15 @@ def get_history_summary(ticker):
 def summary(to_summarize):
     fs = FrequencySummarizer()
     result = []
-    while len(result) < 5:
+    while len(result) < 5 and len(to_summarize) > 0:
+        article_url = to_summarize.pop(0)
         try:
-            article_url = to_summarize.pop(0)
             title, text, image, date, domain = get_only_text(article_url)
             result.append(
                 {'title': title, 'text': text, 'image': image, 'points': fs.summarize(text, 3), 'url': article_url,
                  'date': date, 'domain': domain})
         except:
-            pass
+            continue
     return result
 
 

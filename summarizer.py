@@ -70,6 +70,8 @@ class FrequencySummarizer:
 def get_only_text(url):
     r = requests.get("https://mercury.postlight.com/parser", params={"url": url}, headers={"x-api-key": "maZi0D8XGrHW6vFFOWtSVgHy8bZUPNVGQPMg0BTS"})
     d = r.json()
+    if not d:
+        raise ReferenceError("Failed to parse")
     soup = BeautifulSoup(d["content"])
     text = ' '.join(map(lambda p: p.text, soup.find_all('p')))
     return d["title"], text, d["lead_image_url"], d["date_published"], d["domain"]
