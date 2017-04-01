@@ -14,24 +14,29 @@
     <div class="starter-template">
         <h1>Ticker Watcher</h1>
         <p class="lead">A Dashboard Demonstration for Efficient Market Research</p>
-    </div>
-
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <form action="{{ url_for('summarize') }}" method="GET">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Get Started by Inputting a Ticker Name"
-                           name="ticker">
-                    <span class="input-group-btn">
-                        <button class="btn btn-default" type="submit"> Search </button>
-                    </span>
-                </div>
-            </form>
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <form action="{{ url_for('summarize') }}" method="GET">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Get Started by Inputting a Ticker Name"
+                               name="ticker" id="myInput">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="submit">
+                                <span class="glyphicon glyphicon-search"></span>  Search
+                            </button>
+                            <button class="btn btn-primary" type="button" id="add_ticker">
+                                <span class="glyphicon glyphicon-pushpin"></span> Add to Watchlist
+                            </button>
+                        </span>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 
+
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="panel panel-primary">
                 <div class="panel-heading">
                     <h3 class="panel-title">Ticker Watchlist</h3>
@@ -41,18 +46,11 @@
                         <tbody id="watchlist">
                         </tbody>
                     </table>
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Add a Ticker to Watchlist"
-                               id="myInput">
-                        <span class="input-group-btn">
-                            <button class="btn btn-default" type="button" id="add_ticker">Add</button>
-                        </span>
-                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-8">
+        <div class="col-md-9">
             <!-- TradingView Widget BEGIN -->
             <div id="comparison-widget"></div>
             <script type="text/javascript" src="https://d33t3vvu2t2yu5.cloudfront.net/tv.js"></script>
@@ -105,7 +103,8 @@
                 });
             }
 
-            addToWatchList("AAPL"); addToWatchList("GOOG");
+            addToWatchList("AAPL");
+            addToWatchList("GOOG");
             comparisonWidget();
 
             $('#add_ticker').on("click", function (e) {
