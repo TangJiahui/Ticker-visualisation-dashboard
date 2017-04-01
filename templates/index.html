@@ -45,7 +45,7 @@
                                id="myInput">
                         <span class="input-group-btn">
                             <button class="btn btn-default" type="button" id="add_ticker">Add</button>
-                            </span>
+                        </span>
                     </div>
                 </div>
             </div>
@@ -83,19 +83,32 @@
 
     <script>
         $(function () {
+            var watchlist = [];
             $('#add_ticker').on("click", function (e) {
                 var inputValue = $('#myInput').val();
                 var tr = document.createElement("tr");
-                var td = document.createElement("td")
+                var td = document.createElement("td");
+                var td2 = document.createElement("td");
                 var t = document.createTextNode(inputValue);
                 td.appendChild(t);
-                tr.appendChild(td)
+                td2.innerHTML = "<span class=\"glyphicon glyphicon-eye-close\"></span>";
+                $(td2).children("span").on("click", function() {
+                    $(this).parents("tr").remove();
+                    var index = watchlist.indexOf(5);
+                    watchlist.splice(index, 1);
+                });
+                tr.appendChild(td);
+                tr.appendChild(td2);
                 if (inputValue === '') {
                     alert("You must write something!");
-                } else {
-                    document.getElementById("watchlist").appendChild(tr);
+                } else if(watchlist.indexOf(inputValue) != -1) {
+                    alert("You've already added it to your watchlist!")
                 }
-                document.getElementById("myInput").value = "";
+                else {
+                    document.getElementById("watchlist").appendChild(tr);
+                    watchlist.push(inputValue)
+                }
+                $("#myInput").val("");
             });
         });
     </script>
