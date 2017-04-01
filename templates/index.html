@@ -6,6 +6,10 @@
             padding: 40px 15px;
             text-align: center;
         }
+
+        a.tks {
+            text-decoration: none !important;
+        }
     </style>
 {% endblock %}
 
@@ -71,11 +75,10 @@
                     return;
                 }
 
-                var t = document.createTextNode(ticker);
                 var tr = document.createElement("tr");
                 var td = document.createElement("td");
                 var td2 = document.createElement("td");
-                td.appendChild(t);
+                td.innerHTML = '<a class="tks" href="/summarize/?ticker=' + ticker + '">' + ticker + '</a>';
                 td2.innerHTML = "<span class=\"glyphicon glyphicon-eye-close\"></span>";
                 $(td2).children("span").on("click", function () {
                     $(this).parents("tr").remove();
