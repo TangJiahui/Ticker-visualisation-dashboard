@@ -11,6 +11,7 @@
             text-decoration: none !important;
         }
     </style>
+    <script src="/static/js/watchlist.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -64,17 +65,10 @@
 
     <script>
         $(function () {
-            var watchlist = [];
+{#            var watchlist = JSON.parse(localStorage.getItem("tickerlst")) || [];#}
+            var wl = watchList();
 
-            function addToWatchList(ticker) {
-                if (ticker === '') {
-                    alert("You must write something!");
-                    return;
-                } else if (watchlist.indexOf(ticker) !== -1) {
-                    alert("You've already added it to your watchlist!");
-                    return;
-                }
-
+            function appendToFrontWatchList(ticker) {
                 var tr = document.createElement("tr");
                 var td = document.createElement("td");
                 var td2 = document.createElement("td");
@@ -82,20 +76,35 @@
                 td2.innerHTML = "<span class=\"glyphicon glyphicon-eye-close\"></span>";
                 $(td2).children("span").on("click", function () {
                     $(this).parents("tr").remove();
-                    var index = watchlist.indexOf(ticker);
-                    watchlist.splice(index, 1);
+                    wl.deleteFromList(ticker);
                     comparisonWidget();
                 });
                 tr.appendChild(td);
                 tr.appendChild(td2);
                 document.getElementById("watchlist").appendChild(tr);
-                watchlist.push(ticker);
+            }
+
+            function addToWatchList(ticker) {
+                if (ticker === '') {
+                    alert("You must write something!");
+                    return;
+                } else if (wl.getList().indexOf(ticker) !== -1) {
+                    alert("You've already added it to your watchlist!");
+                    return;
+                }
+
+                appendToFrontWatchList(ticker);
+                wl.addToList(ticker);
             }
 
             function comparisonWidget() {
+                if (wl.getList().length === 0) {
+                    $("#comparison-widget").html("");
+                    return;
+                }
                 new TradingView.MediumWidget({
                     "container_id": "comparison-widget",
-                    "symbols": watchlist,
+                    "symbols": wl.getList(),
                     "gridLineColor": "#e9e9ea",
                     "fontColor": "#83888D",
                     "underLineColor": "#dbeffb",
@@ -106,8 +115,9 @@
                 });
             }
 
-            addToWatchList("AAPL");
-            addToWatchList("GOOG");
+            for (var i=0; i<wl.getList().length; i++)
+                appendToFrontWatchList(wl.getList()[i]);
+
             comparisonWidget();
 
             $('#add_ticker').on("click", function (e) {
