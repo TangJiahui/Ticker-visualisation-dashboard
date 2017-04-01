@@ -3,8 +3,9 @@
 {% block additional_head %}
     <script src="http://d3js.org/d3.v3.min.js"></script>
     <script src="/static/js/d3.layout.cloud.js"></script>
-
     <script async src="https://platform.twitter.com/widgets.js"></script>
+    <script src="/static/js/watchlist.js"></script>
+
 {% endblock %}
 
 {% block content %}
@@ -37,7 +38,12 @@
         </div>
 
         <div class="col-md-8">
-            <h4>{{ wiki.name }}</h4>
+            <h4 id="add_fav">{{ wiki.name }}
+                <button class="btn btn-primary btn-xs pull-right" type="button" id="add_ticker">
+                    <span class="glyphicon glyphicon-pushpin"></span>
+                    <span id="button-text">Add to Watchlist</span>
+                </button>
+            </h4>
             <p>{{ wiki.article }}</p>
             Link to Wikipedia:
             <a href="{{ wiki.url }}">{{ wiki.url }}</a>
@@ -200,7 +206,25 @@
             });
             $('.glyphicon-remove').on('click', function () {
                 $(this).parents('.panel').fadeOut();
-            })
+            });
+
+            // add to watchlist
+            var wl = watchList();
+
+            function disableButton($btn) {
+                $btn.addClass("disabled").children("#button-text").text("In Watchlist");
+            }
+
+            if (wl.getList().indexOf("{{ ticker }}") !== -1)
+                disableButton($("#add_ticker"));
+
+            $('#add_ticker').on("click", function (e) {
+                if ($(this).hasClass("disabled"))
+                    return;
+                var inputValue = "{{ ticker }}".toUpperCase();
+                wl.addToList(inputValue);
+                disableButton($(this));
+            });
         });
     </script>
 
