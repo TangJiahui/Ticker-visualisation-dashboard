@@ -71,8 +71,8 @@ def parse_company(ticker):
     feed_xml = urllib2.urlopen(url).read()
     root = ET.fromstring(feed_xml)
     to_summarize = []
-    for i in root[0].iter('item'):
-        to_summarize.append(i[1].text)
+    for i in root.iter('item'):
+        to_summarize.append(i.find('link').text)
     return to_summarize
 
 
