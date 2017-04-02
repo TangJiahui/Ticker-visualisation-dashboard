@@ -109,7 +109,6 @@ def get_history_summary(ticker):
         summary_history[ticker] = {}
         summary_history[ticker]["hist"] = result
         summary_history[ticker]["expiry"] = time.time() + 60 * 10
-        # social = social_mention(ticker)
     return result
 
 
@@ -126,15 +125,6 @@ def summary(to_summarize):
         except:
             continue
     return result
-
-
-# def social_mention(ticker):
-#     items = get_social_mention(ticker)
-#     result = []
-#     for i in items:
-#         result.append({'title': i['title'], 'description': i['description'], 'link': i['link'], 'timestamp': i['timestamp'], 'user': i['user'], 'source': i['source']})
-#     return result
-
 
 wiki_history = {}
 
