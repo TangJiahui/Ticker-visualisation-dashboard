@@ -1,3 +1,27 @@
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<style type="text/css">
+    .chart-gauge {
+        width: 100%;
+    }
+
+    .chart-filled {
+        fill: steelblue;
+    }
+
+    .chart-empty {
+        fill: #dedede;
+    }
+
+    .needle, .needle-center {
+        fill: #464A4F;
+    }
+
+    svg {
+        font: 10px sans-serif;
+    }
+
+</style>
+
 <h5 align="right">News Score: {{ news_sentiment|round(2) }}</h5>
 <div class="progress">
     <div class="progress progress-striped">
@@ -10,3 +34,10 @@
         <div class="progress-bar progress-bar-success" style="width: {{ social_sentiment*50+50 }}%;"></div>
     </div>
 </div>
+
+<h5 align="right">Overall Score: {{ ((news_sentiment+social_sentiment)/2)|round(2) }}</h5>
+<div class="chart-gauge"></div>
+<script type="text/javascript" src="/static/js/gauge-d3.js"></script>
+<script type="text/javascript">
+    needle.moveTo({{ (news_sentiment + social_sentiment) / 2 * 0.5 + 0.5 }});
+</script>
