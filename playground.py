@@ -13,49 +13,10 @@ import time
 app = Flask(__name__)
 
 
-# add variable parts to URL
-@app.route('/user/<username>')
-def show_user_profile(username):
-    # show the user profile for that user
-    return 'User %s' % username
-
-
-@app.route('/post/<int:post_id>')
-def show_post(post_id):
-    # show the post with the given id, the id is an integer
-    return 'Post %d' % post_id
-
-
-# Http methods
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method == 'POST':
-        do_the_login()
-    else:
-        show_the_login_form()
-
-
-def do_the_login():
-    return None
-
-
-def show_the_login_form():
-    return None
-
-
-# static files
-# url_for('static', filename='style.css')
-
-
 # rendering templates
 @app.route('/')
 def index():
     return render_template('index.html')
-
-
-@app.route('/wordcloud/')
-def wordcloud():
-    return render_template('wordcloud.html')
 
 
 def parse_company(ticker):
@@ -65,13 +26,6 @@ def parse_company(ticker):
     to_summarize = []
     for i in root[0].iter('item'):
         to_summarize.append(i[1].text)
-    return to_summarize
-
-
-def parse_bbc():
-    feed_xml = urllib2.urlopen('http://feeds.bbci.co.uk/news/rss.xml').read()
-    feed = BeautifulSoup(feed_xml.decode('utf8'))
-    to_summarize = map(lambda p: p.text, feed.find_all('guid'))
     return to_summarize
 
 
@@ -108,6 +62,8 @@ def generate_wordcloud(result):
 
 
 summary_history = {}
+
+
 def get_history_summary(ticker):
     if ticker in summary_history:
         if time.time() > summary_history[ticker]["expiry"]:
