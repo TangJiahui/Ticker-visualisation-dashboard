@@ -1,0 +1,22 @@
+{% for article in result %}
+    <div class="media">
+        <div class="media-left">
+            <a href="{{ article.url }}">
+                <img style="max-width: 96px; max-height: 96px" class="media-object"
+                     src="{{ article.image or "http://www.oneilllogistics.com/content/images/news.png" }}"
+                >
+            </a>
+        </div>
+        <div class="media-body">
+            <a href="{{ article.url }}">
+                <h4 class="media-heading">{{ article.title }}</h4>
+            </a>
+            <p style="color: darkgrey;"> Sources: {{ article.domain }} </p>
+            <ul>
+                {% for point in article.points %}
+                    <li>{{ point }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endfor %}

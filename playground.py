@@ -1,6 +1,4 @@
-from flask import Flask
-from flask import render_template
-from flask import request
+from flask import Flask, render_template, request, jsonify
 from summarizer import *
 from wiki import *
 from relevant_company import *
@@ -19,16 +17,6 @@ def index():
     return render_template('index.html')
 
 
-def parse_company(ticker):
-    url = "http://finance.yahoo.com/rss/headline?s=" + str(ticker)
-    feed_xml = urllib2.urlopen(url).read()
-    root = ET.fromstring(feed_xml)
-    to_summarize = []
-    for i in root[0].iter('item'):
-        to_summarize.append(i[1].text)
-    return to_summarize
-
-
 @app.route('/summarize/')
 def summarize():
     ticker = request.args['ticker']
@@ -39,12 +27,51 @@ def summarize():
     relevant_ticker = relevant(ticker)
     relevant_comp = convert_ticker_to_company(relevant_ticker)
     relevant_t_c = zip(relevant_ticker, relevant_comp)
-    wordcloud = generate_wordcloud(result)
     news_sentiment = generate_sentiment(result)
     social_sentiment = generate_sentiment(social_tweets)
-    return render_template('dashboard.html', ticker=ticker, company_name=company_name, result=result,
-                           wiki=wiki, relevant_t_c=relevant_t_c, wordcloud=wordcloud, social_tweets=social_tweets,
+    return render_template('dashboard.html', ticker=ticker, company_name=company_name,
+                           wiki=wiki, relevant_t_c=relevant_t_c, social_tweets=social_tweets,
                            news_sentiment=news_sentiment, social_sentiment=social_sentiment)
+
+
+@app.route('/modules/news')
+def modules_news():
+    ticker = request.args['ticker']
+    result = get_history_summary(ticker)
+    return render_template('modules/news.html', result=result)
+
+
+@app.route('/modules/wordcloud')
+def modules_wordcloud():
+    ticker = request.args['ticker']
+    result = get_history_summary(ticker)
+    wordcloud = generate_wordcloud(result)
+    return jsonify(wordcloud)
+
+
+@app.route('/modules/sentiment')
+def modules_sentiment():
+    pass
+
+
+@app.route('/modules/relevant')
+def modules_relevant():
+    pass
+
+
+@app.route('/modules/tweets')
+def modules_tweets():
+    pass
+
+
+def parse_company(ticker):
+    url = "http://finance.yahoo.com/rss/headline?s=" + str(ticker)
+    feed_xml = urllib2.urlopen(url).read()
+    root = ET.fromstring(feed_xml)
+    to_summarize = []
+    for i in root[0].iter('item'):
+        to_summarize.append(i[1].text)
+    return to_summarize
 
 
 def generate_sentiment(result):
