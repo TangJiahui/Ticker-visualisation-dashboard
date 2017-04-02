@@ -3,7 +3,6 @@
 {% block additional_head %}
     <script src="https://d3js.org/d3.v3.min.js"></script>
     <script src="/static/js/d3.layout.cloud.js"></script>
-    <script async src="https://platform.twitter.com/widgets.js"></script>
     <script src="/static/js/watchlist.js"></script>
 
 {% endblock %}
@@ -132,12 +131,8 @@
                         <span class="glyphicon glyphicon-remove pull-right"></span>
                     </div>
                 </div>
-                <div class="panel-body list-group" style="padding: 0">
-                    {% for i, j in relevant_t_c %}
-                        <a href="{{ url_for('summarize', ticker = i) }}" class="list-group-item ">
-                            {{ i + ": " +j }}
-                        </a>
-                    {% endfor %}
+                <div class="panel-body list-group" style="padding: 0" id="modules-relevant-body">
+                    LOADING..
                 </div>
             </div>
 
@@ -150,12 +145,8 @@
                         <span class="glyphicon glyphicon-remove pull-right"></span>
                     </div>
                 </div>
-                <div class="panel-body" style="overflow-y: scroll; height:400px;">
-                    {% for t in social_tweets %}
-                        <blockquote class="twitter-tweet">
-                            <a href="https://twitter.com/{{ t.screen_name }}/status/{{ t.id }}">...</a>
-                        </blockquote>
-                    {% endfor %}
+                <div class="panel-body" style="overflow-y: scroll; height:400px;" id="modules-tweets-body">
+                    LOADING..
                 </div>
             </div>
 
@@ -280,6 +271,12 @@
             });
             $.get('{{ url_for('modules_sentiment') }}', ajax_data, function (data) {
                 $('#modules-sentiment-body').html(data);
+            });
+            $.get('{{ url_for('modules_relevant') }}', ajax_data, function (data) {
+                $('#modules-relevant-body').html(data);
+            });
+            $.get('{{ url_for('modules_tweets') }}', ajax_data, function (data) {
+                $('#modules-tweets-body').html(data);
             });
         });
     </script>

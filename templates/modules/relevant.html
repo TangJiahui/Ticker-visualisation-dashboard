@@ -1,0 +1,5 @@
+{% for i, j in relevant_t_c %}
+    <a href="{{ url_for('summarize', ticker = i) }}" class="list-group-item ">
+        {{ i + ": " +j }}
+    </a>
+{% endfor %}

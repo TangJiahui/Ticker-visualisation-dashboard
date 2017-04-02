@@ -21,14 +21,8 @@ def index():
 def summarize():
     ticker = request.args['ticker']
     company_name = convert_ticker_to_company([ticker])[0]
-    social_tweets = tweets(ticker)
-    result = get_history_summary(ticker)
     wiki = wiki_page(ticker)
-    relevant_ticker = relevant(ticker)
-    relevant_comp = convert_ticker_to_company(relevant_ticker)
-    relevant_t_c = zip(relevant_ticker, relevant_comp)
-    return render_template('dashboard.html', ticker=ticker, company_name=company_name,
-                           wiki=wiki, relevant_t_c=relevant_t_c, social_tweets=social_tweets)
+    return render_template('dashboard.html', ticker=ticker, company_name=company_name, wiki=wiki)
 
 
 @app.route('/modules/news')
@@ -58,12 +52,18 @@ def modules_sentiment():
 
 @app.route('/modules/relevant')
 def modules_relevant():
-    pass
+    ticker = request.args['ticker']
+    relevant_ticker = relevant(ticker)
+    relevant_comp = convert_ticker_to_company(relevant_ticker)
+    relevant_t_c = zip(relevant_ticker, relevant_comp)
+    return render_template("modules/relevant.html", relevant_t_c=relevant_t_c,)
 
 
 @app.route('/modules/tweets')
 def modules_tweets():
-    pass
+    ticker = request.args['ticker']
+    social_tweets = tweets(ticker)
+    return render_template("modules/tweets.html", social_tweets=social_tweets)
 
 
 def parse_company(ticker):
