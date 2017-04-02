@@ -6,6 +6,7 @@ from wiki import *
 from relevant_company import *
 from wordcloud import *
 from social_media import *
+from sentiment import *
 import xml.etree.ElementTree as ET
 import time
 
@@ -85,8 +86,18 @@ def summarize():
     relevant_comp = convert_ticker_to_company(relevant_ticker)
     relevant_t_c = zip(relevant_ticker, relevant_comp)
     wordcloud = generate_wordcloud(result)
+    news_sentiment = generate_sentiment(result)
+    social_sentiment = generate_sentiment(social_tweets)
     return render_template('dashboard.html', ticker=ticker, company_name=company_name, result=result,
-                           wiki=wiki, relevant_t_c=relevant_t_c, wordcloud=wordcloud, social_tweets=social_tweets)
+                           wiki=wiki, relevant_t_c=relevant_t_c, wordcloud=wordcloud, social_tweets=social_tweets,
+                           news_sentiment=news_sentiment, social_sentiment=social_sentiment)
+
+
+def generate_sentiment(result):
+    text = ""
+    for article in result:
+        text = text + article["text"]
+    return calculate_sentiment(text)
 
 
 def generate_wordcloud(result):
@@ -97,8 +108,6 @@ def generate_wordcloud(result):
 
 
 summary_history = {}
-
-
 def get_history_summary(ticker):
     if ticker in summary_history:
         if time.time() > summary_history[ticker]["expiry"]:

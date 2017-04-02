@@ -135,6 +135,31 @@
                 <div class="panel-heading">
                     <div class="panel-title">
                         <span class="glyphicon glyphicon-menu-up"></span>
+                        Sentiment Score
+                        <span class="glyphicon glyphicon-remove pull-right"></span>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="progress">
+                        <div class="progress">
+                            <div class="progress-bar" style="width: {{ news_sentiment*50+50 }}%;"></div>
+                        </div>
+                    </div>
+                    <h4>News Score: {{ news_sentiment|round(2) }}</h4>
+                    <div class="progress">
+                        <div class="progress">
+                            <div class="progress-bar" style="width: {{ social_sentiment*50+50 }}%;"></div>
+                        </div>
+                    </div>
+                    <h4>Social Score: {{ social_sentiment|round(2) }}</h4>
+                </div>
+            </div>
+
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        <span class="glyphicon glyphicon-menu-up"></span>
                         Relevant Stock Tickers
                         <span class="glyphicon glyphicon-remove pull-right"></span>
                     </div>

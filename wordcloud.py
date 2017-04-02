@@ -24,12 +24,14 @@ def compute_frequencies(text):
                 freq[word] += 1
     result = []
     max_value = float(max(freq.values()))
-    multiplier = 120/max_value
+    min_value = float(min(freq.values()))
+    diff = max_value - min_value
     for i in freq:
         if freq[i] > min_cut:
             curr = {}
             curr["text"] = i
-            curr["size"] = freq[i] * multiplier
+            # restrict size between 5-120
+            curr["size"] = (freq[i] - min_value)/diff * (115) + 5
             result.append(curr)
     return result
 
