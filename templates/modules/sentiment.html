@@ -1,0 +1,12 @@
+<div class="progress">
+    <div class="progress">
+        <div class="progress-bar" style="width: {{ news_sentiment*50+50 }}%;"></div>
+    </div>
+</div>
+<h4>News Score: {{ news_sentiment|round(2) }}</h4>
+<div class="progress">
+    <div class="progress">
+        <div class="progress-bar" style="width: {{ social_sentiment*50+50 }}%;"></div>
+    </div>
+</div>
+<h4>Social Score: {{ social_sentiment|round(2) }}</h4>

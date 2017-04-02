@@ -118,19 +118,8 @@
                         <span class="glyphicon glyphicon-remove pull-right"></span>
                     </div>
                 </div>
-                <div class="panel-body">
-                    <div class="progress">
-                        <div class="progress">
-                            <div class="progress-bar" style="width: {{ news_sentiment*50+50 }}%;"></div>
-                        </div>
-                    </div>
-                    <h4>News Score: {{ news_sentiment|round(2) }}</h4>
-                    <div class="progress">
-                        <div class="progress">
-                            <div class="progress-bar" style="width: {{ social_sentiment*50+50 }}%;"></div>
-                        </div>
-                    </div>
-                    <h4>Social Score: {{ social_sentiment|round(2) }}</h4>
+                <div class="panel-body" id="modules-sentiment-body">
+                    LOADING...
                 </div>
             </div>
 
@@ -288,7 +277,10 @@
             $.get('{{ url_for('modules_wordcloud') }}', ajax_data, function (data) {
                 $('#modules-wordcloud-body').html('<div id="wordcloud"></div>');
                 draw_wordcloud(data);
-            })
+            });
+            $.get('{{ url_for('modules_sentiment') }}', ajax_data, function (data) {
+                $('#modules-sentiment-body').html(data);
+            });
         });
     </script>
 {% endblock %}

@@ -27,11 +27,8 @@ def summarize():
     relevant_ticker = relevant(ticker)
     relevant_comp = convert_ticker_to_company(relevant_ticker)
     relevant_t_c = zip(relevant_ticker, relevant_comp)
-    news_sentiment = generate_sentiment(result)
-    social_sentiment = generate_sentiment(social_tweets)
     return render_template('dashboard.html', ticker=ticker, company_name=company_name,
-                           wiki=wiki, relevant_t_c=relevant_t_c, social_tweets=social_tweets,
-                           news_sentiment=news_sentiment, social_sentiment=social_sentiment)
+                           wiki=wiki, relevant_t_c=relevant_t_c, social_tweets=social_tweets)
 
 
 @app.route('/modules/news')
@@ -51,7 +48,12 @@ def modules_wordcloud():
 
 @app.route('/modules/sentiment')
 def modules_sentiment():
-    pass
+    ticker = request.args['ticker']
+    result = get_history_summary(ticker)
+    social_tweets = tweets(ticker)
+    news_sentiment = generate_sentiment(result)
+    social_sentiment = generate_sentiment(social_tweets)
+    return render_template("modules/sentiment.html", news_sentiment=news_sentiment, social_sentiment=social_sentiment)
 
 
 @app.route('/modules/relevant')
