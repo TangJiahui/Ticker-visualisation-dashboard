@@ -73,7 +73,8 @@ def modules_ner():
     wiki = wiki_page(ticker)
     text = wiki["article"]
     entity = ner(text)
-    return render_template("modules/ner.html", entity=entity)
+    company_name = convert_ticker_to_company([ticker])[0]
+    return render_template("modules/ner.html", entity=entity, company_name=company_name)
 
 
 def parse_company(ticker):

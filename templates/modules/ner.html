@@ -1,20 +1,29 @@
+
+
 <h4 style="line-height: 30px">
     {% for i in entity.keys() %}
         {% if i=="I-PER" %}
             {% for j in entity[i] %}
-                <span class="label label-success">{{ j }}</span>
+                <a href="http://www.google.com/custom?q={{ company_name +" " + j }}&btnG=Search">
+                    <span class="label label-success">{{ j }}</span>
+                </a>
             {% endfor %}
         {% endif %}
 
         {% if i=="I-LOC" %}
             {% for j in entity[i] %}
-                <span class="label label-primary">{{ j }}</span>
+                <a  href="http://www.google.com/custom?q={{ company_name +" " + j }}&btnG=Search">
+                    <span class="label label-primary">{{ j }}</span>
+                </a>
+
             {% endfor %}
         {% endif %}
 
         {% if i=="I-ORG" %}
             {% for j in entity[i] %}
-                <span class="label label-warning">{{ j }}</span>
+                <a href="http://www.google.com/custom?q={{ company_name +" " + j }}&btnG=Search">
+                    <span class="label label-warning">{{ j }}</span>
+                </a>
             {% endfor %}
         {% endif %}
     {% endfor %}
