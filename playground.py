@@ -5,6 +5,7 @@ from relevant_company import *
 from wordcloud import *
 from social_media import *
 from sentiment import *
+from named_entity import *
 import xml.etree.ElementTree as ET
 import time
 
@@ -66,6 +67,15 @@ def modules_tweets():
     return render_template("modules/tweets.html", social_tweets=social_tweets)
 
 
+@app.route('/modules/ner')
+def modules_ner():
+    ticker = request.args['ticker']
+    wiki = wiki_page(ticker)
+    text = wiki["article"]
+    entity = ner(text)
+    return render_template("modules/ner.html", entity=entity)
+
+
 def parse_company(ticker):
     url = "http://finance.yahoo.com/rss/headline?s=" + str(ticker)
     feed_xml = urllib2.urlopen(url).read()
@@ -76,18 +86,19 @@ def parse_company(ticker):
     return to_summarize
 
 
-def generate_sentiment(result):
+def paste_text(result):
     text = ""
     for article in result:
         text = text + article["text"]
-    return calculate_sentiment(text)
+    return text
+
+
+def generate_sentiment(result):
+    return calculate_sentiment(paste_text(result))
 
 
 def generate_wordcloud(result):
-    text = ""
-    for article in result:
-        text = text + article["text"]
-    return compute_frequencies(text)
+    return compute_frequencies(paste_text(result))
 
 
 summary_history = {}

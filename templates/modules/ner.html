@@ -1,0 +1,21 @@
+<h4 style="line-height: 30px">
+    {% for i in entity.keys() %}
+        {% if i=="I-PER" %}
+            {% for j in entity[i] %}
+                <span class="label label-success">{{ j }}</span>
+            {% endfor %}
+        {% endif %}
+
+        {% if i=="I-LOC" %}
+            {% for j in entity[i] %}
+                <span class="label label-primary">{{ j }}</span>
+            {% endfor %}
+        {% endif %}
+
+        {% if i=="I-ORG" %}
+            {% for j in entity[i] %}
+                <span class="label label-warning">{{ j }}</span>
+            {% endfor %}
+        {% endif %}
+    {% endfor %}
+</h4>
