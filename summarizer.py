@@ -67,8 +67,9 @@ class FrequencySummarizer:
 
 # crawling xml page of a rss feed
 # used beautifulsoup and mercury web parser
-def get_only_text(url):
-    r = requests.get("https://mercury.postlight.com/parser", params={"url": url}, headers={"x-api-key": "maZi0D8XGrHW6vFFOWtSVgHy8bZUPNVGQPMg0BTS"})
+def get_news_content(url):
+    r = requests.get("https://mercury.postlight.com/parser", params={"url": url},
+                     headers={"x-api-key": "maZi0D8XGrHW6vFFOWtSVgHy8bZUPNVGQPMg0BTS"})
     d = r.json()
     if not d:
         raise ReferenceError("Failed to parse")

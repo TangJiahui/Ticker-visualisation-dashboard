@@ -24,7 +24,6 @@ def get_wiki_url(ticker):
 # give a list of ticker and return a list of company name
 converted = {}
 
-
 def convert_ticker_to_company(tickerlst):
     non_converted = []
     for i in tickerlst:

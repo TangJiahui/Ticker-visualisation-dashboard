@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, abort
 from summarizer import *
 from wiki import *
 from relevant_company import *
@@ -17,11 +17,20 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
+@app.errorhandler(500)
+def page_not_found(e):
+    return render_template('500.html'),500
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'),404
 
 @app.route('/summarize/')
 def summarize():
     ticker = request.args['ticker']
     company_name = convert_ticker_to_company([ticker])[0]
+    if company_name == 'N/A':
+        abort(404)
     wiki = wiki_page(ticker)
     return render_template('dashboard.html', ticker=ticker, company_name=company_name, wiki=wiki)
 
@@ -130,7 +139,7 @@ def summary(to_summarize):
     while len(result) < 5 and len(to_summarize) > 0:
         article_url = to_summarize.pop(0)
         try:
-            title, text, image, date, domain = get_only_text(article_url)
+            title, text, image, date, domain = get_news_content(article_url)
             result.append(
                 {'title': title, 'text': text, 'image': image, 'points': fs.summarize(text, 3), 'url': article_url,
                  'date': date, 'domain': domain})
@@ -139,7 +148,6 @@ def summary(to_summarize):
     return result
 
 wiki_history = {}
-
 
 def wiki_page(ticker):
     if ticker in wiki_history:
@@ -152,4 +160,4 @@ def wiki_page(ticker):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=5001)
