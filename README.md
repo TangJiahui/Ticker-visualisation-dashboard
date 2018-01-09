@@ -1,7 +1,7 @@
 # Ticker Watcher Visualisation Dashboard
 
 This dashboard serves as a demo to B.Sc. (Business Analytics) Dissertation *Data Mining and Visualisation Framework for
-Efficient Cognitive Learning on Financial Market Research.
+Efficient Cognitive Learning on Financial Market Research.*
 
 In this project, a framework is proposed to speed up market research process and help cognitive learning of overloading information about stock tickers for financial professionals. The framework consists of mainly three components: Text Processing Core, Visualisation Core and Machine Learning Core.
 
